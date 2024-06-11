@@ -4,20 +4,17 @@ import json
 app = Flask(__name__)
 
 
-# Funktion zum Laden von Blogbeiträgen aus der JSON-Datei
 def load_blog_posts():
     with open('blog_posts.json', 'r') as file:
         blog_posts = json.load(file)
     return blog_posts
 
 
-# Funktion zum Speichern von Blogbeiträgen in die JSON-Datei
 def save_blog_posts(blog_posts):
     with open('blog_posts.json', 'w') as file:
         json.dump(blog_posts, file)
 
 
-# Funktion zum Abrufen eines Blogbeitrags nach ID
 def fetch_post_by_id(post_id):
     blog_posts = load_blog_posts()
     for post in blog_posts:
@@ -87,6 +84,8 @@ def like(post_id):
     blog_posts = load_blog_posts()
     for post in blog_posts:
         if post['id'] == post_id:
+            if 'likes' not in post:
+                post['likes'] = 0
             post['likes'] += 1
             break
     save_blog_posts(blog_posts)
@@ -94,4 +93,4 @@ def like(post_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)
